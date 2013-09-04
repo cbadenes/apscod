@@ -21,12 +21,16 @@ public class AreaDrivenRow {
     private final HashMap<String, AntennaStatistic> antennas;
     private long numCallsMade;
     private long numCallsRecv;
+    private long durCallsMade;
+    private long durCallsRecv;
 
     public AreaDrivenRow(String _area) {
         this.area = _area;
         this.antennas = new HashMap<>();
         this.numCallsMade = 0;
         this.numCallsRecv = 0;
+        this.durCallsMade = 0;
+        this.durCallsRecv = 0;
     }
 
     public AreaDrivenRow add(AntennaStatistic _antenna) {
@@ -35,6 +39,8 @@ public class AreaDrivenRow {
         this.antennas.put(_antenna.getId(), _antenna);
         this.numCallsMade += _antenna.getNumCallsMade();
         this.numCallsRecv += _antenna.getNumCallsRecv();
+        this.durCallsMade += _antenna.getDurCallsMade();
+        this.durCallsRecv += _antenna.getDurCallsRecv();
         return this;
     }
 
@@ -48,6 +54,14 @@ public class AreaDrivenRow {
 
     public long getNumCallsRecv() {
         return this.numCallsRecv;
+    }
+
+    public long getMeanCallsMade() {
+        return this.durCallsMade / this.numCallsMade;
+    }
+
+    public long getMeanCallsRecv() {
+        return this.durCallsRecv / this.numCallsRecv;
     }
 
     public long getTotalCalls() {

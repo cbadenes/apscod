@@ -41,14 +41,33 @@ public class AreaDrivenData implements LineHandler {
     }
 
     @Override
+    /**
+     * @ATTRIBUTE ant_id NUMERIC
+    @ATTRIBUTE num_calls NUMERIC
+    @ATTRIBUTE num_calls_made NUMERIC
+    @ATTRIBUTE num_calls_recv NUMERIC
+    @ATTRIBUTE calls_type {made, received}
+    @ATTRIBUTE mean_calls_made NUMERIC
+    @ATTRIBUTE mean_calls_recv NUMERIC
+    @ATTRIBUTE dur_calls_made NUMERIC
+    @ATTRIBUTE dur_calls_recv NUMERIC
+    @ATTRIBUTE dur_calls_type {made, received}
+    @ATTRIBUTE mean_dur_calls_made NUMERIC
+    @ATTRIBUTE mean_dur_calls_recv NUMERIC
+     */
     public void load(StringTokenizer _tokenizer) {
         String antId = _tokenizer.nextToken();
         String numCalls = _tokenizer.nextToken();
         String numCallsMade = _tokenizer.nextToken();
         String numCallsRecv = _tokenizer.nextToken();
+        _tokenizer.nextToken(); // calls_type
+        _tokenizer.nextToken(); // mean_calls_made
+        _tokenizer.nextToken(); // mean_calls_recv
+        String durCallsMade = _tokenizer.nextToken(); // dur_calls_made
+        String durCallsRecv = _tokenizer.nextToken(); // dur_calls_recv
 
         AntennaStatistic antenna = new AntennaStatistic(antId, Integer.valueOf(numCallsMade),
-                Integer.valueOf(numCallsRecv));
+                Integer.valueOf(numCallsRecv), Long.valueOf(durCallsMade), Long.valueOf(durCallsRecv));
 
         AntennaInfo antennaInfo = this.positions.getInfo(antId);
         if (antennaInfo == null) {
@@ -81,12 +100,14 @@ public class AreaDrivenData implements LineHandler {
             writer.write("% \n");
             writer.write("@RELATION area\n");
             writer.write("\n");
-            writer.write("@ATTRIBUTE area {Abidjan, Niakaramandougou, Zu_noula, Bondoukou, Oum_, Tabou, Issia, S_gu_la, Ti_bissou-Department, Toumodi, Bia, Dimbokro, Adiak_, Dimtokros, Divo, Ferkess_dougou, Jaqueville-Department, Kadiolo, Tiassal_, Gagnoa, Soubr_, Agboville, Bocanda, Man, Odienn_, Bouna, Beounm, Korhogo, Alepe, Grand-Bassam, M_bahiakro, San-P_dro, Danan_, Yamoussoukro, Juabeso, Lakota, Mankono, Aboisso, Bangolo, Biankouma, Jomoro, Sinfra, Grand-Lahou, Guiglo, Dabakala, Agnibil_krou, null, Abengourou, Tanda, Katiola, Du_kou_, Toul_pleu, Bounfie, Daoukro, Sassandra, Yamoussourkro, Vavoua, Bongouanou, Tengr_la, Bouak_, B_oumi, Touba, Dabou, Adzope, Sakassou, Boundiali, Daloa}\n");
+            writer.write("@ATTRIBUTE area {Abidjan, Niakaramandougou, Zuenoula, Bondoukou, Oume, Tabou, Issia, Seguela, Tiebissou-Department, Toumodi, Bia, Dimbokro, Adiake, Dimtokros, Divo, Ferkessedougou, Jaqueville-Department, Kadiolo, Tiassale, Gagnoa, Soubre, Agboville, Bocanda, Man, Odienne, Bouna, Beounm, Korhogo, Alepe, Grand-Bassam, M_bahiakro, San-Pedro, Danane, Yamoussoukro, Juabeso, Lakota, Mankono, Aboisso, Bangolo, Biankouma, Jomoro, Sinfra, Grand-Lahou, Guiglo, Dabakala, Agnibilekrou, null, Abengourou, Tanda, Katiola, Duekoue, Toulepleu, Bounfie, Daoukro, Sassandra, Yamoussourkro, Vavoua, Bongouanou, Tengrela, Bouake, Beoumi, Touba, Dabou, Adzope, Sakassou, Boundiali, Daloa}\n");
             writer.write("@ATTRIBUTE num_antennas NUMERIC\n");
             writer.write("@ATTRIBUTE num_calls NUMERIC\n");
             writer.write("@ATTRIBUTE num_calls_by_antenna NUMERIC\n");
             writer.write("@ATTRIBUTE num_calls_made NUMERIC\n");
             writer.write("@ATTRIBUTE num_calls_recv NUMERIC\n");
+            writer.write("@ATTRIBUTE mean_dur_calls_made NUMERIC\n");
+            writer.write("@ATTRIBUTE mean_dur_calls_recv NUMERIC\n");
             writer.write("\n");
             writer.write("@DATA\n");
             writer.write("\n");
@@ -100,7 +121,9 @@ public class AreaDrivenData implements LineHandler {
                 writer.write(data.getTotalCalls() + ",");
                 writer.write(String.valueOf(data.getTotalCalls() / data.getNumAntenna()) + ",");
                 writer.write(data.getNumCallsMade() + ",");
-                writer.write(String.valueOf(data.getNumCallsRecv()));
+                writer.write(data.getNumCallsRecv() + ",");
+                writer.write(data.getMeanCallsMade() + ",");
+                writer.write(data.getMeanCallsRecv() + "");
                 writer.write("\n");
             }
             writer.flush();

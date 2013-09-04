@@ -21,10 +21,16 @@ public class AntennaStatistic {
 
     private final int numCallsRecv;
 
-    public AntennaStatistic(String _id, int _numCallsMade, int _numCallsRecv) {
+    private final long durCallsRecv;
+
+    private final long durCallsMade;
+
+    public AntennaStatistic(String _id, int _numCallsMade, int _numCallsRecv, long _durCallsMade, long _durCallsRecv) {
         this.id = _id;
         this.numCallsMade = _numCallsMade;
         this.numCallsRecv = _numCallsRecv;
+        this.durCallsMade = _durCallsMade;
+        this.durCallsRecv = _durCallsRecv;
     }
 
     public String getId() {
@@ -37,6 +43,14 @@ public class AntennaStatistic {
 
     public int getNumCallsRecv() {
         return this.numCallsRecv;
+    }
+
+    public long getDurCallsRecv() {
+        return this.durCallsRecv;
+    }
+
+    public long getDurCallsMade() {
+        return this.durCallsMade;
     }
 
 }
